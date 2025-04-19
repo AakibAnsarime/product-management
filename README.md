@@ -45,7 +45,7 @@ A React Native/Expo app for managing products and orders with offline capabiliti
 
 1. Clone the repository
    ```bash
-   git clone [repository-url]
+   git clone https://github.com/AakibAnsarime/product-management.git
    cd raja1
    ```
 
