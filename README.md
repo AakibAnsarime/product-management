@@ -72,7 +72,9 @@ A React Native/Expo app for managing products and orders with offline capabiliti
    ```
 
 3. Build APK for testing
+- delete android if exist
    ```bash
+   npx expo prebuild
    npx eas build -p android --profile preview
    ```
 

@@ -2,7 +2,7 @@
   "expo": {
     "name": "raja",
     "slug": "raja1",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -17,7 +17,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.orderapp.raja",
-      "versionCode": 2
+      "versionCode": 3
     },
     "web": {
       "bundler": "metro",

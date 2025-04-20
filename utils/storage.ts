@@ -69,7 +69,26 @@ export const saveOrder = async (order: Order) => {
 export const getOrders = async (): Promise<Order[]> => {
   try {
     const orders = await AsyncStorage.getItem(ORDERS_KEY);
-    return orders ? JSON.parse(orders) : [];
+    const parsedOrders = orders ? JSON.parse(orders) : [];
+    
+    // Migrate old orders to new format
+    return parsedOrders.map((order: any) => {
+      if (!order.items) {
+        // Convert old format to new format
+        return {
+          ...order,
+          items: [
+            {
+              productId: order.productId || '',
+              quantity: order.quantity || 1,
+              price: order.price || 0
+            }
+          ],
+          totalPrice: order.price || 0
+        };
+      }
+      return order;
+    });
   } catch (error) {
     console.error('Error getting orders:', error);
     return [];
