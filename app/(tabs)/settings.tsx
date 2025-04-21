@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Share, Alert, ScrollView, Platform } from 'react-native';
+import { StyleSheet, Share, Alert, ScrollView, Platform, useColorScheme } from 'react-native';
 import { Button, Card, TextInput } from 'react-native-paper';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
@@ -13,8 +13,9 @@ import { exportData, importData } from '@/utils/storage';
 const PRODUCTS_KEY = '@products';
 const ORDERS_KEY = '@orders';
 
-export default function SettingsScreen() {
+const SettingsScreen = () => {
   const [importText, setImportText] = useState('');
+  const colorScheme = useColorScheme();
 
   const handleExport = async () => {
     try {
@@ -22,7 +23,6 @@ export default function SettingsScreen() {
       const fileName = `OrderApp_Backup_${new Date().toISOString().split('T')[0]}.json`;
 
       if (Platform.OS === 'web') {
-        // For web, create a download link
         const element = document.createElement('a');
         const file = new Blob([jsonData], { type: 'application/json' });
         element.href = URL.createObjectURL(file);
@@ -31,7 +31,6 @@ export default function SettingsScreen() {
         element.click();
         document.body.removeChild(element);
       } else {
-        // For mobile, save to file then share
         const filePath = `${FileSystem.documentDirectory}${fileName}`;
         await FileSystem.writeAsStringAsync(filePath, jsonData, {
           encoding: FileSystem.EncodingType.UTF8,
@@ -58,7 +57,6 @@ export default function SettingsScreen() {
         return;
       }
 
-      // Validate JSON before importing
       const parsedData = JSON.parse(importText);
       if (!parsedData.products || !Array.isArray(parsedData.products) || 
           !parsedData.orders || !Array.isArray(parsedData.orders)) {
@@ -84,7 +82,6 @@ export default function SettingsScreen() {
         const file = result.assets[0];
         const fileContent = await FileSystem.readAsStringAsync(file.uri);
         
-        // Validate JSON before importing
         const parsedData = JSON.parse(fileContent);
         if (!parsedData.products || !Array.isArray(parsedData.products) || 
             !parsedData.orders || !Array.isArray(parsedData.orders)) {
@@ -172,9 +169,9 @@ export default function SettingsScreen() {
   return (
     <ThemedView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <Card style={styles.card}>
+        <Card style={[styles.card, { backgroundColor: colorScheme === 'dark' ? '#1E1E3F' : '#FBF7FF' }]}>
           <Card.Content>
-            <ThemedText type="subtitle">Export Data</ThemedText>
+            <ThemedText type="title" style={styles.sectionTitle}>Export Data</ThemedText>
             <ThemedText style={styles.description}>
               Export your products and orders as a JSON file that you can import later.
             </ThemedText>
@@ -188,9 +185,9 @@ export default function SettingsScreen() {
           </Card.Content>
         </Card>
 
-        <Card style={styles.card}>
+        <Card style={[styles.card, { backgroundColor: colorScheme === 'dark' ? '#1E1E3F' : '#FBF7FF' }]}>
           <Card.Content>
-            <ThemedText type="subtitle">Import Data</ThemedText>
+            <ThemedText type="title" style={styles.sectionTitle}>Import Data</ThemedText>
             <ThemedText style={styles.description}>
               Import your previously exported data by selecting a file or pasting the JSON content.
             </ThemedText>
@@ -207,7 +204,7 @@ export default function SettingsScreen() {
               onChangeText={setImportText}
               multiline
               numberOfLines={4}
-              style={styles.textInput}
+              style={[styles.textInput, { backgroundColor: colorScheme === 'dark' ? '#2A2A4F' : '#FFFFFF' }]}
             />
             <Button 
               mode="contained"
@@ -220,9 +217,9 @@ export default function SettingsScreen() {
           </Card.Content>
         </Card>
 
-        <Card style={styles.card}>
+        <Card style={[styles.card, { backgroundColor: colorScheme === 'dark' ? '#1E1E3F' : '#FBF7FF' }]}>
           <Card.Content>
-            <ThemedText type="subtitle">Reset Data</ThemedText>
+            <ThemedText type="title" style={styles.sectionTitle}>Reset Data</ThemedText>
             <ThemedText style={styles.description}>
               Reset your data. Warning: This action cannot be undone!
             </ThemedText>
@@ -255,7 +252,7 @@ export default function SettingsScreen() {
       </ScrollView>
     </ThemedView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -267,6 +264,8 @@ const styles = StyleSheet.create({
   },
   card: {
     marginBottom: 16,
+    elevation: 4,
+    borderRadius: 8,
   },
   description: {
     marginVertical: 8,
@@ -276,5 +275,12 @@ const styles = StyleSheet.create({
   },
   textInput: {
     marginTop: 16,
+    borderRadius: 8,
+  },
+  sectionTitle: {
+    fontSize: 24,
+    marginBottom: 8,
   },
 });
+
+export default SettingsScreen;

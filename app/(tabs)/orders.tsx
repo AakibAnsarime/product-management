@@ -163,7 +163,7 @@ export default function OrdersScreen() {
 
   const renderOrderItem = (item: OrderItem) => (
     <ThemedText>
-      {getProductName(item.productId)} x {item.quantity} = ${item.price.toFixed(2)}
+      {getProductName(item.productId)} x {item.quantity} = QAR {item.price.toFixed(2)}
     </ThemedText>
   );
 
@@ -175,7 +175,7 @@ export default function OrdersScreen() {
     }
 
     return (
-      <Card style={styles.card}>
+      <Card style={[styles.card, { backgroundColor: colorScheme === 'dark' ? '#1E1E3F' : '#FBF7FF' }]}>
         <Card.Content>
           <View style={styles.cardHeader}>
             <ThemedText type="defaultSemiBold">
@@ -198,7 +198,7 @@ export default function OrdersScreen() {
             </View>
           ))}
           <ThemedText>
-            Total: ${(item.totalPrice || 0).toFixed(2)}
+            Total: QAR {(item.totalPrice || 0).toFixed(2)}
           </ThemedText>
           <ThemedText style={item.paymentStatus === 'PAID' ? styles.completedText : styles.pendingText}>
             Status: {item.paymentStatus || 'PENDING'}
@@ -238,7 +238,7 @@ export default function OrdersScreen() {
               {products.map(product => (
                 <Picker.Item
                   key={product.id}
-                  label={`${product.name} - $${product.price}`}
+                  label={`${product.name} - QAR ${product.price}`}
                   value={product.id}
                 />
               ))}
@@ -266,7 +266,7 @@ export default function OrdersScreen() {
           />
         </View>
         <ThemedText style={styles.subtotalText}>
-          Subtotal: ${item.price.toFixed(2)}
+          Subtotal: QAR {item.price.toFixed(2)}
         </ThemedText>
       </Card.Content>
     </Card>
@@ -284,7 +284,7 @@ export default function OrdersScreen() {
           <View style={styles.form}>
             <Card style={[
               styles.formCard,
-              { backgroundColor: colorScheme === 'dark' ? '#1a1a1a' : '#fff' }
+              { backgroundColor: colorScheme === 'dark' ? '#1E1E3F' : '#FBF7FF' }
             ]}>
               <Card.Content>
                 <TextInput
@@ -309,7 +309,7 @@ export default function OrdersScreen() {
                 </List.Section>
 
                 <ThemedText type="defaultSemiBold" style={styles.totalText}>
-                  Total: ${calculateTotalPrice().toFixed(2)}
+                  Total: QAR {calculateTotalPrice().toFixed(2)}
                 </ThemedText>
 
                 <SegmentedButtons
@@ -363,11 +363,10 @@ export default function OrdersScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 50,
   },
   formContainer: {
-    padding: 16,
-    paddingTop: Platform.OS === 'web' ? 50 : 16,
-    justifyContent: 'center',
+    padding: 16,justifyContent: 'center',
     alignItems: 'center',
   },
   form: {
@@ -383,6 +382,7 @@ const styles = StyleSheet.create({
   },
   list: {
     padding: 16,
+    paddingTop: 24, // Added top padding for the list view
   },
   card: {
     marginBottom: 16,

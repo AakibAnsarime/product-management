@@ -3,6 +3,7 @@ import { StyleSheet, View, ScrollView } from 'react-native';
 import { Card } from 'react-native-paper';
 import { router } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native';
+import { useColorScheme } from '@/hooks/useColorScheme';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -12,6 +13,7 @@ import { getOrders, getProducts } from '@/utils/storage';
 export default function DashboardScreen() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
+  const colorScheme = useColorScheme();
 
   useEffect(() => {
     loadData();
@@ -42,7 +44,10 @@ export default function DashboardScreen() {
 
   const getTopProducts = () => {
     const productCounts = orders.reduce((acc, order) => {
-      acc[order.productId] = (acc[order.productId] || 0) + order.quantity;
+      // Iterate through each item in the order
+      order.items.forEach(item => {
+        acc[item.productId] = (acc[item.productId] || 0) + item.quantity;
+      });
       return acc;
     }, {} as { [key: string]: number });
 
@@ -64,14 +69,14 @@ export default function DashboardScreen() {
         </View>
 
         <View style={styles.statsContainer}>
-          <Card style={styles.statsCard} onPress={() => router.push('/orders')}>
+          <Card style={[styles.statsCard, { backgroundColor: colorScheme === 'dark' ? '#1E1E3F' : '#FBF7FF' }]} onPress={() => router.push('/orders')}>
             <Card.Content>
               <ThemedText type="defaultSemiBold">Total Orders</ThemedText>
               <ThemedText type="title">{orders.length}</ThemedText>
             </Card.Content>
           </Card>
 
-          <Card style={styles.statsCard} onPress={() => router.push('/products')}>
+          <Card style={[styles.statsCard, { backgroundColor: colorScheme === 'dark' ? '#1E1E3F' : '#FBF7FF' }]} onPress={() => router.push('/products')}>
             <Card.Content>
               <ThemedText type="defaultSemiBold">Total Products</ThemedText>
               <ThemedText type="title">{products.length}</ThemedText>
@@ -79,21 +84,21 @@ export default function DashboardScreen() {
           </Card>
         </View>
 
-        <Card style={styles.card}>
+        <Card style={[styles.card, { backgroundColor: colorScheme === 'dark' ? '#1E1E3F' : '#FBF7FF' }]}>
           <Card.Content>
             <ThemedText type="defaultSemiBold">Revenue</ThemedText>
             <ThemedText type="title">${getTotalRevenue().toFixed(2)}</ThemedText>
           </Card.Content>
         </Card>
 
-        <Card style={styles.card}>
+        <Card style={[styles.card, { backgroundColor: colorScheme === 'dark' ? '#1E1E3F' : '#FBF7FF' }]}>
           <Card.Content>
             <ThemedText type="defaultSemiBold">Pending Orders</ThemedText>
             <ThemedText type="title">{getPendingOrders()}</ThemedText>
           </Card.Content>
         </Card>
 
-        <Card style={styles.card}>
+        <Card style={[styles.card, { backgroundColor: colorScheme === 'dark' ? '#1E1E3F' : '#FBF7FF' }]}>
           <Card.Content>
             <ThemedText type="defaultSemiBold">Top Selling Products</ThemedText>
             {getTopProducts().map(({ product, count }) => (

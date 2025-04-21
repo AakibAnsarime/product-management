@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, FlatList, Alert } from 'react-native';
+import { StyleSheet, View, FlatList, Alert, Platform } from 'react-native';
 import { Button, TextInput, Card, FAB } from 'react-native-paper';
 import { useFocusEffect } from '@react-navigation/native';
+import { useColorScheme } from '@/hooks/useColorScheme';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -14,6 +15,7 @@ export default function ProductsScreen() {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
+  const colorScheme = useColorScheme();
 
   useFocusEffect(
     React.useCallback(() => {
@@ -80,7 +82,7 @@ export default function ProductsScreen() {
   };
 
   const renderProduct = ({ item }: { item: Product }) => (
-    <Card style={styles.card}>
+    <Card style={[styles.card, { backgroundColor: colorScheme === 'dark' ? '#1E1E3F' : '#FBF7FF' }]}>
       <Card.Content>
         <ThemedText type="defaultSemiBold">{item.name}</ThemedText>
         <ThemedText>Price: ${item.price.toFixed(2)}</ThemedText>
@@ -96,7 +98,10 @@ export default function ProductsScreen() {
     <ThemedView style={styles.container}>
       {showForm ? (
         <View style={styles.formContainer}>
-          <View style={styles.form}>
+          <View style={[
+            styles.form, 
+            { backgroundColor: colorScheme === 'dark' ? '#1E1E3F' : '#FBF7FF', borderRadius: 8 }
+          ]}>
             <TextInput
               label="Product Name"
               value={name}
@@ -166,6 +171,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
+    paddingTop: Platform.OS === 'web' ? 50 : 24, // Updated to match orders tab padding
   },
   form: {
     width: '100%',
