@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "raja",
+    "name": "AalOrder",
     "slug": "raja1",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -17,7 +17,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.orderapp.raja",
-      "versionCode": 3
+      "versionCode": 1
     },
     "web": {
       "bundler": "metro",

@@ -21,7 +21,7 @@ extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
   }
 }
 
-rootProject.name = 'raja'
+rootProject.name = 'AalOrder'
 
 dependencyResolutionManagement {
   versionCatalogs {
