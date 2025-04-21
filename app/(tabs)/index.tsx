@@ -87,7 +87,7 @@ export default function DashboardScreen() {
         <Card style={[styles.card, { backgroundColor: colorScheme === 'dark' ? '#1E1E3F' : '#FBF7FF' }]}>
           <Card.Content>
             <ThemedText type="defaultSemiBold">Revenue</ThemedText>
-            <ThemedText type="title">${getTotalRevenue().toFixed(2)}</ThemedText>
+            <ThemedText type="title">QAR {getTotalRevenue().toFixed(2)}</ThemedText>
           </Card.Content>
         </Card>
 

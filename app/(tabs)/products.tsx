@@ -85,7 +85,7 @@ export default function ProductsScreen() {
     <Card style={[styles.card, { backgroundColor: colorScheme === 'dark' ? '#1E1E3F' : '#FBF7FF' }]}>
       <Card.Content>
         <ThemedText type="defaultSemiBold">{item.name}</ThemedText>
-        <ThemedText>Price: ${item.price.toFixed(2)}</ThemedText>
+        <ThemedText>Price: QAR {item.price.toFixed(2)}</ThemedText>
       </Card.Content>
       <Card.Actions>
         <Button onPress={() => handleEdit(item)}>Edit</Button>
